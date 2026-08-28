@@ -174,10 +174,22 @@ def blend(start: str, end: str, amount: float) -> tuple[int, int, int]:
     )
 
 
-def draw_profile_row(draw: ImageDraw.ImageDraw, y: int, key: str, dots: str, value: str) -> None:
-    draw.text((495, y), key, font=FONT_15_BOLD, fill=ORANGE)
-    draw.text((582, y), dots, font=FONT_15_BOLD, fill=FAINT)
-    draw.text((705, y), value, font=FONT_15_BOLD, fill=LIGHT_BLUE)
+def draw_profile_row(draw: ImageDraw.ImageDraw, y: int, key: str, value: str) -> None:
+    key_x = 495
+    value_right = 1168
+    leader_gap = 14
+
+    key_width = draw.textlength(key, font=FONT_15_BOLD)
+    value_width = draw.textlength(value, font=FONT_15_BOLD)
+    value_x = value_right - value_width
+    leader_x = key_x + key_width + leader_gap
+    leader_right = value_x - leader_gap
+    dot_width = draw.textlength(".", font=FONT_15_BOLD)
+    dot_count = max(0, int((leader_right - leader_x) // dot_width))
+
+    draw.text((key_x, y), key, font=FONT_15_BOLD, fill=ORANGE)
+    draw.text((leader_x, y), "." * dot_count, font=FONT_15_BOLD, fill=FAINT)
+    draw.text((value_x, y), value, font=FONT_15_BOLD, fill=LIGHT_BLUE)
 
 
 def draw_base_card() -> Image.Image:
@@ -204,21 +216,21 @@ def draw_base_card() -> Image.Image:
     draw.text((495, 107), "shashank@padavalkar", font=FONT_25_BOLD, fill=WHITE)
     draw.line((495, 145, 1168, 145), fill=BORDER)
 
-    draw_profile_row(draw, 164, "Role", "." * 11, "ML & Computer Vision Engineer")
-    draw_profile_row(draw, 196, "Based in", "." * 7, "Karnataka, India")
-    draw_profile_row(draw, 228, "Focus", "." * 10, "Deep Learning · Visual Computing")
+    draw_profile_row(draw, 164, "Role", "ML & Computer Vision Engineer")
+    draw_profile_row(draw, 196, "Based in", "Karnataka, India")
+    draw_profile_row(draw, 228, "Focus", "Deep Learning · Visual Computing")
 
     draw.text((495, 269), "— Stack", font=FONT_16, fill=TEXT)
     draw.line((575, 277, 1168, 277), fill=BORDER)
-    draw_profile_row(draw, 300, "Languages", "." * 6, "Python · C · C++ · JavaScript · TypeScript")
-    draw_profile_row(draw, 332, "ML / CV", "." * 8, "PyTorch · TensorFlow · OpenCV · scikit-learn")
-    draw_profile_row(draw, 364, "Tooling", "." * 8, "AWS · Docker · Linux · Git · PostgreSQL")
+    draw_profile_row(draw, 300, "Languages", "Python · C · C++")
+    draw_profile_row(draw, 332, "ML / CV", "PyTorch · TensorFlow · OpenCV · scikit-learn")
+    draw_profile_row(draw, 364, "Tooling", "AWS · Docker · Linux · Git · PostgreSQL")
 
     draw.text((495, 405), "— Connect", font=FONT_16, fill=TEXT)
     draw.line((590, 413, 1168, 413), fill=BORDER)
-    draw_profile_row(draw, 429, "GitHub", "." * 9, "Shashank-Padavalkar")
-    draw_profile_row(draw, 457, "LinkedIn", "." * 7, "shashank-padavalkar")
-    draw_profile_row(draw, 485, "Email", "." * 10, "shashankp1307@gmail.com")
+    draw_profile_row(draw, 429, "GitHub", "Shashank-Padavalkar")
+    draw_profile_row(draw, 457, "LinkedIn", "shashank-padavalkar")
+    draw_profile_row(draw, 485, "Email", "shashankp1307@gmail.com")
 
     draw.rounded_rectangle((1, 1, 1198, 518), radius=21, outline=BORDER, width=2)
     return frame
