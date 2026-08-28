@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Shashank Padavalkar terminal-style profile card</title>
+  <desc id="desc">A dark terminal card featuring Shashank's portrait, role, location, technical focus, tools, GitHub, and LinkedIn.</desc>
+
+  <defs>
+    <linearGradient id="card-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117" />
+      <stop offset="1" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="portrait-fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0d1117" stop-opacity="0" />
+      <stop offset="0.55" stop-color="#0d1117" stop-opacity="0.05" />
+      <stop offset="1" stop-color="#0d1117" stop-opacity="1" />
+    </linearGradient>
+    <linearGradient id="portrait-bottom" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.55" stop-color="#0d1117" stop-opacity="0" />
+      <stop offset="1" stop-color="#0d1117" stop-opacity="0.78" />
+    </linearGradient>
+    <radialGradient id="blue-glow" cx="0.32" cy="0.52" r="0.7">
+      <stop offset="0" stop-color="#58a6ff" stop-opacity="0.13" />
+      <stop offset="1" stop-color="#58a6ff" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="terminal-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#8b949e" stroke-width="0.5" opacity="0.07" />
+    </pattern>
+    <clipPath id="card-clip">
+      <rect width="1200" height="520" rx="22" />
+    </clipPath>
+    <filter id="card-shadow" x="-8%" y="-12%" width="116%" height="128%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <g filter="url(#card-shadow)">
+    <rect x="2" y="2" width="1196" height="516" rx="20" fill="url(#card-bg)" stroke="#30363d" stroke-width="2" />
+  </g>
+
+  <g clip-path="url(#card-clip)">
+    <rect width="1200" height="520" fill="url(#card-bg)" />
+    <rect x="450" y="55" width="750" height="465" fill="url(#terminal-grid)" />
+    <rect width="1200" height="55" fill="#161b22" />
+    <line x1="0" y1="55" x2="1200" y2="55" stroke="#30363d" />
+
+    <circle cx="28" cy="28" r="7" fill="#ff5f56" />
+    <circle cx="52" cy="28" r="7" fill="#ffbd2e" />
+    <circle cx="76" cy="28" r="7" fill="#27c93f" />
+    <text x="104" y="34" fill="#8b949e" font-family="Cascadia Mono, Consolas, monospace" font-size="16">profile-terminal — shashank@github</text>
+
+    <rect x="0" y="55" width="465" height="465" fill="url(#blue-glow)" />
+    <image x="-7" y="55" width="465" height="465" preserveAspectRatio="xMidYMid slice" xlink:href="profile-portrait.png" href="profile-portrait.png" />
+    <rect x="260" y="55" width="220" height="465" fill="url(#portrait-fade)" />
+    <rect x="0" y="55" width="465" height="465" fill="url(#portrait-bottom)" />
+    <line x1="455" y1="75" x2="455" y2="500" stroke="#30363d" />
+
+    <g font-family="Cascadia Mono, Consolas, monospace">
+      <text x="495" y="91" fill="#3fb950" font-size="17">$</text>
+      <text x="518" y="91" fill="#c9d1d9" font-size="17">whoami --verbose</text>
+      <text x="495" y="128" fill="#f0f6fc" font-size="25" font-weight="700">shashank@padavalkar</text>
+      <line x1="495" y1="145" x2="1168" y2="145" stroke="#30363d" />
+
+      <g font-size="15.5">
+        <text x="495" y="178" fill="#ffa657">Role</text>
+        <text x="582" y="178" fill="#484f58">...........</text>
+        <text x="705" y="178" fill="#a5d6ff">ML &amp; Computer Vision Engineer</text>
+
+        <text x="495" y="210" fill="#ffa657">Based in</text>
+        <text x="582" y="210" fill="#484f58">.......</text>
+        <text x="705" y="210" fill="#a5d6ff">Karnataka, India</text>
+
+        <text x="495" y="242" fill="#ffa657">Focus</text>
+        <text x="582" y="242" fill="#484f58">..........</text>
+        <text x="705" y="242" fill="#a5d6ff">Deep Learning · Visual Computing</text>
+      </g>
+
+      <text x="495" y="282" fill="#c9d1d9" font-size="16">— Stack</text>
+      <line x1="575" y1="277" x2="1168" y2="277" stroke="#30363d" />
+
+      <g font-size="15">
+        <text x="495" y="314" fill="#ffa657">Languages</text>
+        <text x="582" y="314" fill="#484f58">......</text>
+        <text x="705" y="314" fill="#a5d6ff">Python · C · C++ · JavaScript · TypeScript</text>
+
+        <text x="495" y="346" fill="#ffa657">ML / CV</text>
+        <text x="582" y="346" fill="#484f58">........</text>
+        <text x="705" y="346" fill="#a5d6ff">PyTorch · TensorFlow · OpenCV · scikit-learn</text>
+
+        <text x="495" y="378" fill="#ffa657">Tooling</text>
+        <text x="582" y="378" fill="#484f58">........</text>
+        <text x="705" y="378" fill="#a5d6ff">AWS · Docker · Linux · Git · PostgreSQL</text>
+      </g>
+
+      <text x="495" y="418" fill="#c9d1d9" font-size="16">— Connect</text>
+      <line x1="590" y1="413" x2="1168" y2="413" stroke="#30363d" />
+
+      <g font-size="15.5">
+        <text x="495" y="451" fill="#ffa657">GitHub</text>
+        <text x="582" y="451" fill="#484f58">.........</text>
+        <text x="705" y="451" fill="#a5d6ff">Shashank-Padavalkar</text>
+
+        <text x="495" y="483" fill="#ffa657">LinkedIn</text>
+        <text x="582" y="483" fill="#484f58">.......</text>
+        <text x="705" y="483" fill="#a5d6ff">shashank-padavalkar</text>
+      </g>
+    </g>
+  </g>
+
+  <rect x="2" y="2" width="1196" height="516" rx="20" fill="none" stroke="#30363d" stroke-width="2" />
+</svg>

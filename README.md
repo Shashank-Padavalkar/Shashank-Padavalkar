@@ -1,7 +1,7 @@
 <div align="center">
 
-  <h1>Hey, I'm Shashank Padavalkar! 👋</h1>
-  <h3>Machine Learning &amp; Computer Vision Engineer from Karnataka, India 🇮🇳</h3>
+  <img src="assets/profile-terminal.png" alt="Terminal-style profile card for Shashank Padavalkar" width="100%" />
+  <br /><br />
   <a href="https://github.com/Shashank-Padavalkar">
     <img src="https://img.shields.io/badge/GitHub-Shashank--Padavalkar-181717?style=for-the-badge&amp;logo=github" alt="Shashank Padavalkar on GitHub" />
   </a>
