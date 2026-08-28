@@ -19,9 +19,9 @@
 
 ## About Me
 
-- 🤖 I work at the intersection of **machine learning** and **computer vision**.
-- 🧠 My interests include intelligent systems, deep learning, and visual computing.
-- 📍 Based in Karnataka, India.
+- 💼 Currently working as a **Computer Vision Engineer at [GolfWiz](https://www.golfwiz.ai/)**.
+- 🧠 Experience with **LLMs, RAG & Generative AI**.
+- 🚀 Building **production-ready AI systems with Computer Vision & Deep Learning**.
 
 ## Languages and Tools
 
@@ -50,6 +50,8 @@
 ### Cloud, DevOps & Data
 
 <p>
+  <a href="https://fastapi.tiangolo.com/" title="FastAPI"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/fastapi/fastapi-original.svg" alt="FastAPI" width="42" height="42" /></a>&nbsp;
+  <a href="https://www.cloudflare.com/" title="Cloudflare"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cloudflare/cloudflare-original.svg" alt="Cloudflare" width="42" height="42" /></a>&nbsp;
   <a href="https://aws.amazon.com/" title="AWS"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" width="42" height="42" /></a>&nbsp;
   <a href="https://www.docker.com/" title="Docker"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" alt="Docker" width="42" height="42" /></a>&nbsp;
   <a href="https://nginx.org/" title="NGINX"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nginx/nginx-original.svg" alt="NGINX" width="42" height="42" /></a>&nbsp;
