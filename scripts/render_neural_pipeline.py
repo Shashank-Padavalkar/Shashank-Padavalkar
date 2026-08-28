@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageFont
@@ -10,9 +9,6 @@ from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
-BASE_PATH = ASSETS / "profile-terminal.png"
-GIF_PATH = ASSETS / "profile-terminal.gif"
-PNG_PATH = ASSETS / "profile-terminal.png"
 
 WIDTH, HEIGHT = 1200, 520
 FRAME_COUNT = 40
@@ -21,17 +17,112 @@ FRAME_DURATION_MS = 90
 FONT_REGULAR = Path(r"C:\Windows\Fonts\consola.ttf")
 FONT_BOLD = Path(r"C:\Windows\Fonts\consolab.ttf")
 
-BG = "#0d1117"
-BG_ALT = "#101722"
-PANEL = "#161b22"
-BORDER = "#30363d"
-MUTED = "#484f58"
-TEXT = "#c9d1d9"
-WHITE = "#f0f6fc"
-BLUE = "#58a6ff"
-LIGHT_BLUE = "#a5d6ff"
-GREEN = "#3fb950"
-ORANGE = "#ffa657"
+THEMES = {
+    "dark": {
+        "page_bg": "#0d1117",
+        "bg": "#0d1117",
+        "bg_alt": "#101722",
+        "panel": "#161b22",
+        "border": "#30363d",
+        "grid": "#141d28",
+        "muted": "#8b949e",
+        "faint": "#484f58",
+        "text": "#c9d1d9",
+        "white": "#f0f6fc",
+        "blue": "#58a6ff",
+        "light_blue": "#a5d6ff",
+        "green": "#3fb950",
+        "orange": "#ffa657",
+        "surface": "#111c28",
+        "surface_alt": "#1b2735",
+        "cell_active": "#254b6d",
+        "cell_edge": "#253343",
+        "scan_off": "#1b3951",
+        "feature_back": "#132232",
+        "feature_front": "#172b3f",
+        "feature_edge": "#29435a",
+        "feature_cell": "#1c3448",
+        "feature_cell_edge": "#27465f",
+        "node_off": "#193226",
+        "node_active_edge": "#54d174",
+        "node_edge": "#2d5a3b",
+        "trace": "#243747",
+        "panel_edge": "#26394b",
+    },
+    "light": {
+        "page_bg": "#ffffff",
+        "bg": "#ffffff",
+        "bg_alt": "#f6f8fa",
+        "panel": "#f6f8fa",
+        "border": "#d0d7de",
+        "grid": "#eaeef2",
+        "muted": "#57606a",
+        "faint": "#8c959f",
+        "text": "#24292f",
+        "white": "#1f2328",
+        "blue": "#0969da",
+        "light_blue": "#0550ae",
+        "green": "#1a7f37",
+        "orange": "#bc4c00",
+        "surface": "#f6f8fa",
+        "surface_alt": "#eaeef2",
+        "cell_active": "#b6d7f7",
+        "cell_edge": "#d0d7de",
+        "scan_off": "#ddf4ff",
+        "feature_back": "#eef5fc",
+        "feature_front": "#ddf4ff",
+        "feature_edge": "#80b6e8",
+        "feature_cell": "#dbeafe",
+        "feature_cell_edge": "#a8cbed",
+        "node_off": "#dafbe1",
+        "node_active_edge": "#1a7f37",
+        "node_edge": "#74c991",
+        "trace": "#afb8c1",
+        "panel_edge": "#d0d7de",
+    },
+}
+
+
+def use_theme(name: str) -> None:
+    palette = THEMES[name]
+    global PAGE_BG, BG, BG_ALT, PANEL, BORDER, GRID
+    global MUTED, FAINT, TEXT, WHITE, BLUE, LIGHT_BLUE, GREEN, ORANGE
+    global SURFACE, SURFACE_ALT, CELL_ACTIVE, CELL_EDGE, SCAN_OFF
+    global FEATURE_BACK, FEATURE_FRONT, FEATURE_EDGE, FEATURE_CELL, FEATURE_CELL_EDGE
+    global NODE_OFF, NODE_ACTIVE_EDGE, NODE_EDGE, TRACE, PANEL_EDGE
+
+    PAGE_BG = palette["page_bg"]
+    BG = palette["bg"]
+    BG_ALT = palette["bg_alt"]
+    PANEL = palette["panel"]
+    BORDER = palette["border"]
+    GRID = palette["grid"]
+    MUTED = palette["muted"]
+    FAINT = palette["faint"]
+    TEXT = palette["text"]
+    WHITE = palette["white"]
+    BLUE = palette["blue"]
+    LIGHT_BLUE = palette["light_blue"]
+    GREEN = palette["green"]
+    ORANGE = palette["orange"]
+    SURFACE = palette["surface"]
+    SURFACE_ALT = palette["surface_alt"]
+    CELL_ACTIVE = palette["cell_active"]
+    CELL_EDGE = palette["cell_edge"]
+    SCAN_OFF = palette["scan_off"]
+    FEATURE_BACK = palette["feature_back"]
+    FEATURE_FRONT = palette["feature_front"]
+    FEATURE_EDGE = palette["feature_edge"]
+    FEATURE_CELL = palette["feature_cell"]
+    FEATURE_CELL_EDGE = palette["feature_cell_edge"]
+    NODE_OFF = palette["node_off"]
+    NODE_ACTIVE_EDGE = palette["node_active_edge"]
+    NODE_EDGE = palette["node_edge"]
+    TRACE = palette["trace"]
+    PANEL_EDGE = palette["panel_edge"]
+
+
+use_theme("dark")
 
 
 def font(size: int, *, bold: bool = False) -> ImageFont.FreeTypeFont:
@@ -44,6 +135,9 @@ FONT_13 = font(13)
 FONT_13_BOLD = font(13, bold=True)
 FONT_14 = font(14)
 FONT_15_BOLD = font(15, bold=True)
+FONT_16 = font(16)
+FONT_17 = font(17)
+FONT_25_BOLD = font(25, bold=True)
 
 
 def clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
@@ -66,6 +160,70 @@ def interpolate(start: tuple[float, float], end: tuple[float, float], amount: fl
     )
 
 
+def hex_rgb(value: str) -> tuple[int, int, int]:
+    value = value.lstrip("#")
+    return tuple(int(value[index : index + 2], 16) for index in (0, 2, 4))
+
+
+def blend(start: str, end: str, amount: float) -> tuple[int, int, int]:
+    start_rgb = hex_rgb(start)
+    end_rgb = hex_rgb(end)
+    return tuple(
+        round(start_channel + (end_channel - start_channel) * amount)
+        for start_channel, end_channel in zip(start_rgb, end_rgb)
+    )
+
+
+def draw_profile_row(draw: ImageDraw.ImageDraw, y: int, key: str, dots: str, value: str) -> None:
+    draw.text((495, y), key, font=FONT_15_BOLD, fill=ORANGE)
+    draw.text((582, y), dots, font=FONT_15_BOLD, fill=FAINT)
+    draw.text((705, y), value, font=FONT_15_BOLD, fill=LIGHT_BLUE)
+
+
+def draw_base_card() -> Image.Image:
+    frame = Image.new("RGB", (WIDTH, HEIGHT), PAGE_BG)
+    draw = ImageDraw.Draw(frame)
+
+    draw.rounded_rectangle((1, 1, 1198, 518), radius=21, fill=BG, outline=BORDER, width=2)
+    draw.rounded_rectangle((2, 2, 1197, 56), radius=19, fill=PANEL)
+    draw.rectangle((2, 27, 1197, 55), fill=PANEL)
+    draw.line((2, 55, 1197, 55), fill=BORDER)
+
+    for x in range(468, 1180, 24):
+        draw.line((x, 56, x, 500), fill=GRID)
+    for y in range(67, 501, 24):
+        draw.line((456, y, 1178, y), fill=GRID)
+
+    draw.ellipse((21, 21, 35, 35), fill="#ff5f56")
+    draw.ellipse((45, 21, 59, 35), fill="#ffbd2e")
+    draw.ellipse((69, 21, 83, 35), fill="#27c93f")
+    draw.text((104, 18), "profile-terminal — shashank@github", font=FONT_16, fill=MUTED)
+
+    draw.text((495, 77), "$", font=FONT_17, fill=GREEN)
+    draw.text((518, 77), "whoami --verbose", font=FONT_17, fill=TEXT)
+    draw.text((495, 107), "shashank@padavalkar", font=FONT_25_BOLD, fill=WHITE)
+    draw.line((495, 145, 1168, 145), fill=BORDER)
+
+    draw_profile_row(draw, 164, "Role", "." * 11, "ML & Computer Vision Engineer")
+    draw_profile_row(draw, 196, "Based in", "." * 7, "Karnataka, India")
+    draw_profile_row(draw, 228, "Focus", "." * 10, "Deep Learning · Visual Computing")
+
+    draw.text((495, 269), "— Stack", font=FONT_16, fill=TEXT)
+    draw.line((575, 277, 1168, 277), fill=BORDER)
+    draw_profile_row(draw, 300, "Languages", "." * 6, "Python · C · C++ · JavaScript · TypeScript")
+    draw_profile_row(draw, 332, "ML / CV", "." * 8, "PyTorch · TensorFlow · OpenCV · scikit-learn")
+    draw_profile_row(draw, 364, "Tooling", "." * 8, "AWS · Docker · Linux · Git · PostgreSQL")
+
+    draw.text((495, 405), "— Connect", font=FONT_16, fill=TEXT)
+    draw.line((590, 413, 1168, 413), fill=BORDER)
+    draw_profile_row(draw, 429, "GitHub", "." * 9, "Shashank-Padavalkar")
+    draw_profile_row(draw, 457, "LinkedIn", "." * 7, "shashank-padavalkar")
+    draw_profile_row(draw, 485, "Email", "." * 10, "shashankp1307@gmail.com")
+
+    draw.rounded_rectangle((1, 1, 1198, 518), radius=21, outline=BORDER, width=2)
+    return frame
+
+
 def reset_left_pane(base: Image.Image) -> Image.Image:
     frame = base.convert("RGB").copy()
 
@@ -73,17 +231,13 @@ def reset_left_pane(base: Image.Image) -> Image.Image:
     pane_draw = ImageDraw.Draw(pane)
     for y in range(55, 519):
         amount = (y - 55) / 464
-        color = (
-            int(13 + 3 * amount),
-            int(17 + 6 * amount),
-            int(23 + 10 * amount),
-        )
+        color = blend(BG, BG_ALT, amount)
         pane_draw.line((0, y, 455, y), fill=color)
 
     for x in range(12, 456, 24):
-        pane_draw.line((x, 55, x, 518), fill="#141d28", width=1)
+        pane_draw.line((x, 55, x, 518), fill=GRID, width=1)
     for y in range(67, 519, 24):
-        pane_draw.line((2, y, 455, y), fill="#141d28", width=1)
+        pane_draw.line((2, y, 455, y), fill=GRID, width=1)
 
     card_mask = Image.new("L", (WIDTH, HEIGHT), 0)
     card_mask_draw = ImageDraw.Draw(card_mask)
@@ -103,7 +257,7 @@ def reset_left_pane(base: Image.Image) -> Image.Image:
 def draw_glow_dot(frame: Image.Image, position: tuple[float, float], color: str, radius: int = 4) -> None:
     x, y = position
     draw = ImageDraw.Draw(frame, "RGB")
-    draw.ellipse((x - radius * 2, y - radius * 2, x + radius * 2, y + radius * 2), outline=MUTED, width=1)
+    draw.ellipse((x - radius * 2, y - radius * 2, x + radius * 2, y + radius * 2), outline=FAINT, width=1)
     draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=color)
     draw.ellipse((x - 1, y - 1, x + 1, y + 1), fill=WHITE)
 
@@ -114,11 +268,11 @@ def draw_dotted_row(
     key: str,
     value: str,
     *,
-    value_color: str = LIGHT_BLUE,
+    value_color: str | None = None,
 ) -> None:
     draw.text((22, y), key, font=FONT_12, fill=ORANGE)
-    draw.text((112, y), "." * 10, font=FONT_12, fill=MUTED)
-    draw.text((205, y), value, font=FONT_12, fill=value_color)
+    draw.text((112, y), "." * 10, font=FONT_12, fill=FAINT)
+    draw.text((205, y), value, font=FONT_12, fill=value_color or LIGHT_BLUE)
 
 
 def draw_input_tensor(draw: ImageDraw.ImageDraw, scan: float) -> tuple[float, float]:
@@ -141,10 +295,10 @@ def draw_input_tensor(draw: ImageDraw.ImageDraw, scan: float) -> tuple[float, fl
             x = origin_x + col * (cell + gap)
             y = origin_y + row * (cell + gap)
             active = bit == "#"
-            fill = "#1b2735" if not active else "#254b6d"
-            outline = "#253343"
+            fill = SURFACE_ALT if not active else CELL_ACTIVE
+            outline = CELL_EDGE
             if row == scan_row:
-                fill = LIGHT_BLUE if active else "#1b3951"
+                fill = LIGHT_BLUE if active else SCAN_OFF
                 outline = BLUE
             draw.rectangle((x, y, x + cell, y + cell), fill=fill, outline=outline)
 
@@ -155,8 +309,8 @@ def draw_feature_maps(draw: ImageDraw.ImageDraw, activation: float) -> tuple[flo
     x, y = 137, 145
     for layer in range(3, -1, -1):
         offset = layer * 5
-        shade = "#132232" if layer else "#172b3f"
-        edge = BLUE if activation > 0.45 and layer == 0 else "#29435a"
+        shade = FEATURE_BACK if layer else FEATURE_FRONT
+        edge = BLUE if activation > 0.45 and layer == 0 else FEATURE_EDGE
         draw.rounded_rectangle((x + offset, y - offset, x + 58 + offset, y + 87 - offset), radius=4, fill=shade, outline=edge, width=1)
 
     front_x, front_y = x, y
@@ -172,8 +326,8 @@ def draw_feature_maps(draw: ImageDraw.ImageDraw, activation: float) -> tuple[flo
             lit = activation > 0.15 and col <= wave_col and energy < 4
             draw.rectangle(
                 (px, py, px + size, py + size),
-                fill=BLUE if lit else "#1c3448",
-                outline="#27465f",
+                fill=BLUE if lit else FEATURE_CELL,
+                outline=FEATURE_CELL_EDGE,
             )
     return x + 73, y + 43
 
@@ -184,26 +338,26 @@ def draw_embedding(draw: ImageDraw.ImageDraw, activation: float) -> tuple[float,
     for index, y in enumerate(ys):
         node_activation = phase(activation, index / 8, (index + 2) / 8)
         radius = 5
-        fill = GREEN if node_activation > 0.55 else "#193226"
-        outline = "#54d174" if node_activation > 0.25 else "#2d5a3b"
+        fill = GREEN if node_activation > 0.55 else NODE_OFF
+        outline = NODE_ACTIVE_EDGE if node_activation > 0.25 else NODE_EDGE
         draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=fill, outline=outline)
     return x + 7, sum(ys) / len(ys)
 
 
 def draw_output(draw: ImageDraw.ImageDraw, activation: float) -> tuple[float, float]:
     x, y, width, height = 321, 143, 116, 98
-    edge = GREEN if activation > 0.75 else "#29435a"
-    draw.rounded_rectangle((x, y, x + width, y + height), radius=5, fill="#111c28", outline=edge)
+    edge = GREEN if activation > 0.75 else FEATURE_EDGE
+    draw.rounded_rectangle((x, y, x + width, y + height), radius=5, fill=SURFACE, outline=edge)
     draw.text((x + 10, y + 9), "CLASSIFIER", font=FONT_11, fill=TEXT)
 
     person_value = 0.998 * activation
     other_value = max(0.002 * activation, 0.0)
-    bars = (("person", person_value, GREEN), ("other", other_value, MUTED))
+    bars = (("person", person_value, GREEN), ("other", other_value, FAINT))
     for index, (label, value, color) in enumerate(bars):
         row_y = y + 35 + index * 27
         draw.text((x + 9, row_y), label, font=FONT_11, fill=LIGHT_BLUE)
         bar_x = x + 57
-        draw.rectangle((bar_x, row_y + 3, bar_x + 43, row_y + 11), fill="#1b2735", outline="#26394b")
+        draw.rectangle((bar_x, row_y + 3, bar_x + 43, row_y + 11), fill=SURFACE_ALT, outline=PANEL_EDGE)
         draw.rectangle((bar_x + 1, row_y + 4, bar_x + 1 + int(41 * value), row_y + 10), fill=color)
         percentage = f"{value * 100:4.1f}" if activation > 0.05 else " -- "
         draw.text((bar_x, row_y + 13), percentage, font=FONT_11, fill=color)
@@ -221,7 +375,7 @@ def draw_pipeline(frame: Image.Image, index: int) -> Image.Image:
 
     draw.text((20, 76), "$", font=FONT_14, fill=GREEN)
     draw.text((38, 76), "demo --pipeline vision_cnn", font=FONT_14, fill=TEXT)
-    draw.text((371, 78), f"{index + 1:02d}/{FRAME_COUNT}", font=FONT_11, fill=MUTED)
+    draw.text((371, 78), f"{index + 1:02d}/{FRAME_COUNT}", font=FONT_11, fill=FAINT)
 
     stage_y = 119
     draw.text((34, stage_y), "INPUT", font=FONT_11, fill=ORANGE)
@@ -249,7 +403,7 @@ def draw_pipeline(frame: Image.Image, index: int) -> Image.Image:
         ((278, 234), output_anchor),
     )
     for start, end in edges:
-        draw.line((*start, *end), fill="#243747", width=1)
+        draw.line((*start, *end), fill=TRACE, width=1)
 
     if 0.13 <= progress <= 0.42:
         amount = phase(progress, 0.13, 0.42)
@@ -274,7 +428,7 @@ def draw_pipeline(frame: Image.Image, index: int) -> Image.Image:
     draw_dotted_row(draw, 340, "conv.out", "[1, 64, 56, 56]")
     draw_dotted_row(draw, 369, "embedding", "[1, 512]")
     prediction = "PERSON  99.8%" if output_activation > 0.9 else "pending..."
-    draw_dotted_row(draw, 398, "prediction", prediction, value_color=GREEN if output_activation > 0.9 else MUTED)
+    draw_dotted_row(draw, 398, "prediction", prediction, value_color=GREEN if output_activation > 0.9 else FAINT)
 
     status = (
         "ENCODING"
@@ -287,7 +441,7 @@ def draw_pipeline(frame: Image.Image, index: int) -> Image.Image:
         if progress < 0.94
         else "RESET"
     )
-    draw.rounded_rectangle((20, 443, 437, 487), radius=5, fill="#111c28", outline="#26394b")
+    draw.rounded_rectangle((20, 443, 437, 487), radius=5, fill=SURFACE, outline=PANEL_EDGE)
     draw.text((31, 453), "backend", font=FONT_11, fill=ORANGE)
     draw.text((94, 453), "PyTorch", font=FONT_11, fill=LIGHT_BLUE)
     draw.text((171, 453), "batch", font=FONT_11, fill=ORANGE)
@@ -298,36 +452,64 @@ def draw_pipeline(frame: Image.Image, index: int) -> Image.Image:
     return frame
 
 
-def render() -> None:
-    if not BASE_PATH.exists():
-        raise FileNotFoundError(f"Base profile card not found: {BASE_PATH}")
+def pin_gif_matte(gif_path: Path, matte: tuple[int, int, int]) -> None:
+    """Set the GIF global palette entry used by the outer corners exactly."""
+    with Image.open(gif_path) as image:
+        image.seek(0)
+        if image.mode != "P":
+            raise ValueError(f"Expected a paletted GIF, got {image.mode}: {gif_path}")
+        matte_index = image.getpixel((0, 0))
 
-    base = Image.open(BASE_PATH).convert("RGB")
-    if base.size != (WIDTH, HEIGHT):
-        raise ValueError(f"Expected {WIDTH}x{HEIGHT}, got {base.size[0]}x{base.size[1]}")
+    data = bytearray(gif_path.read_bytes())
+    if data[:6] not in (b"GIF87a", b"GIF89a"):
+        raise ValueError(f"Not a GIF file: {gif_path}")
+    if not data[10] & 0x80:
+        raise ValueError(f"GIF has no global color table: {gif_path}")
 
+    color_offset = 13 + matte_index * 3
+    data[color_offset : color_offset + 3] = bytes(matte)
+    gif_path.write_bytes(data)
+
+
+def render_theme(theme_name: str) -> None:
+    use_theme(theme_name)
+    gif_path = ASSETS / f"profile-terminal-{theme_name}.gif"
+    png_path = ASSETS / f"profile-terminal-{theme_name}.png"
+
+    base = draw_base_card()
     clean_base = reset_left_pane(base)
     frames = [draw_pipeline(clean_base.copy(), index) for index in range(FRAME_COUNT)]
 
     completed_frame = 35
     palette_source = frames[completed_frame].quantize(colors=128, method=Image.Quantize.MEDIANCUT)
+    matte_index = palette_source.getpixel((0, 0))
+    palette = palette_source.getpalette()
+    matte_rgb = hex_rgb(PAGE_BG)
+    palette[matte_index * 3 : matte_index * 3 + 3] = list(matte_rgb)
+    palette_source.putpalette(palette)
     gif_frames = [
         frame.quantize(palette=palette_source, dither=Image.Dither.NONE)
         for frame in frames
     ]
     gif_frames[0].save(
-        GIF_PATH,
+        gif_path,
         save_all=True,
         append_images=gif_frames[1:],
         duration=FRAME_DURATION_MS,
         loop=0,
-        optimize=True,
+        optimize=False,
         disposal=1,
     )
+    pin_gif_matte(gif_path, matte_rgb)
 
-    frames[completed_frame].save(PNG_PATH, format="PNG", optimize=True)
-    print(f"Rendered {GIF_PATH} ({GIF_PATH.stat().st_size:,} bytes)")
-    print(f"Rendered {PNG_PATH} ({PNG_PATH.stat().st_size:,} bytes)")
+    frames[completed_frame].save(png_path, format="PNG", optimize=True)
+    print(f"Rendered {gif_path} ({gif_path.stat().st_size:,} bytes)")
+    print(f"Rendered {png_path} ({png_path.stat().st_size:,} bytes)")
+
+
+def render() -> None:
+    for theme_name in THEMES:
+        render_theme(theme_name)
 
 
 if __name__ == "__main__":

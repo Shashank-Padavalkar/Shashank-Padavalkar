@@ -1,6 +1,10 @@
 <div align="center">
 
-  <img src="assets/profile-terminal.gif" alt="Animated neural-network inference profile card for Shashank Padavalkar" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/profile-terminal-dark.gif" />
+    <source media="(prefers-color-scheme: light)" srcset="assets/profile-terminal-light.gif" />
+    <img src="assets/profile-terminal-light.gif" alt="Animated neural-network inference profile card for Shashank Padavalkar" width="100%" />
+  </picture>
   <br /><br />
   <a href="https://github.com/Shashank-Padavalkar">
     <img src="https://img.shields.io/badge/GitHub-Shashank--Padavalkar-181717?style=for-the-badge&amp;logo=github" alt="Shashank Padavalkar on GitHub" />
@@ -18,15 +22,6 @@
 - 🤖 I work at the intersection of **machine learning** and **computer vision**.
 - 🧠 My interests include intelligent systems, deep learning, and visual computing.
 - 📍 Based in Karnataka, India.
-
-## Connect with Me
-
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Shashank-Padavalkar)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shashank-padavalkar/)
-
-<!-- Add your email when ready:
-[![Email](https://img.shields.io/badge/Email-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:YOUR_EMAIL_ADDRESS)
--->
 
 ## Languages and Tools
 
