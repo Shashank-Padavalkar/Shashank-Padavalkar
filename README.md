@@ -40,6 +40,7 @@
 ### Programming Languages & Runtime
 
 <p>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" title="HTML5"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" alt="HTML5" width="42" height="42" /></a>&nbsp;
   <a href="https://www.cprogramming.com/" title="C"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="C" width="42" height="42" /></a>&nbsp;
   <a href="https://isocpp.org/" title="C++"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="C++" width="42" height="42" /></a>&nbsp;
   <a href="https://developer.mozilla.org/docs/Web/JavaScript" title="JavaScript"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="JavaScript" width="42" height="42" /></a>&nbsp;
