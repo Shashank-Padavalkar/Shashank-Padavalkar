@@ -76,5 +76,5 @@
 ---
 
 <div align="center">
-  <em>Thanks for visiting!</em>
+  <em>धन्यवादः</em>
 </div>
